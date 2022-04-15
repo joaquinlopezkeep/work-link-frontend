@@ -9,12 +9,13 @@ import {
 	PRODUCTS_URL,
 } from './api';
 
-export async function login(email, password) {
+export async function authenticate(email, password) {
 	const res = await axios.post(AUTH_URL, {
 		username: email,
 		password: password,
 	});
-	return res.status;
+	console.log(res.data);
+	return res;
 }
 
 export const getEmployees = user_header => {

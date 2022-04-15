@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Button, Input } from '@ui-kitten/components';
 import { EmailIcon, EyeIcon } from '../../util/icons';
 import styles from './LoginFormStyles';
-import { login } from '../../util/http';
+import { authenticate } from '../../util/http';
 
 const LoginForm = () => {
 	const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ const LoginForm = () => {
 
 	function loginHandler() {
 		async function getStatus() {
-			const res = await login(email, password);
+			const res = await authenticate(email, password);
 			setStatus(res);
 		}
 		getStatus();

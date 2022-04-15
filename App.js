@@ -16,7 +16,14 @@ export default function App() {
 			<IconRegistry icons={EvaIconsPack} />
 			<ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
 				<NavigationContainer>
-					<Stack.Navigator initialRouteName='Login'>
+					<Stack.Navigator
+						initialRouteName='Login'
+						screenOptions={{
+							headerStyle: {
+								backgroundColor: theme['color-info-100'],
+								headerTintColor: 'white',
+							},
+						}}>
 						<Stack.Screen name='Login' component={LoginScreen} />
 						<Stack.Screen name='Dashboard' component={Dashboard} />
 					</Stack.Navigator>

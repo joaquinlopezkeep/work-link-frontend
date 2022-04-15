@@ -3,8 +3,10 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'flex-start',
+		justifyContent: 'center',
 		alignItems: 'center',
+		maxHeight: 300,
+		padding: 8,
 	},
 	inputs: {
 		maxWidth: '80%',
