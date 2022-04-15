@@ -14,67 +14,17 @@ export async function authenticate(email, password) {
 		username: email,
 		password: password,
 	});
+	console.log(res.status);
+	console.log(res.headers);
 	console.log(res.data);
-	return res;
+	if (!res.data.hasOwnProperty('access_token')) {
+		throw new Error(res.error_message);
+	}
+
+	const token = res.data.access_token;
+	return token;
 }
 
-export const getEmployees = user_header => {
-	axios
-		.get(EMPLOYEES_URL, (header = user_header))
-		.then(response => {
-			console.log(response);
-		})
-		.catch(error => {
-			console.log(error);
-		});
-};
-export const getGroups = user_header => {
-	axios
-		.get(GROUPS_URL, (header = user_header))
-		.then(response => {
-			console.log(response);
-		})
-		.catch(error => {
-			console.log(error);
-		});
-};
-export const getSites = user_header => {
-	axios
-		.get(SITES_URL, (header = user_header))
-		.then(response => {
-			console.log(response);
-		})
-		.catch(error => {
-			console.log(error);
-		});
-};
-export const getJobs = user_header => {
-	axios
-		.get(JOBS_URL, (header = user_header))
-		.then(response => {
-			console.log(response);
-		})
-		.catch(error => {
-			console.log(error);
-		});
-};
-export const getSchedules = user_header => {
-	axios
-		.get(SCHEDULES_URL, (header = user_header))
-		.then(response => {
-			console.log(response);
-		})
-		.catch(error => {
-			console.log(error);
-		});
-};
-export const getProducts = user_header => {
-	axios
-		.get(PRODUCTS_URL, (header = user_header))
-		.then(response => {
-			console.log(response);
-		})
-		.catch(error => {
-			console.log(error);
-		});
-};
+export async function name(header) {
+	const res = await axios.get(EMPLOYEES_URL, header);
+}

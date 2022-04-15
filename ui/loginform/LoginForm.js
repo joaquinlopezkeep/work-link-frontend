@@ -1,30 +1,42 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Button, Input } from '@ui-kitten/components';
+import { Alert, View } from 'react-native';
+import { Button, Input, Spinner, Text } from '@ui-kitten/components';
+import { useSelector, useDispatch } from 'react-redux';
 import { EmailIcon, EyeIcon } from '../../util/icons';
 import styles from './LoginFormStyles';
 import { authenticate } from '../../util/http';
+import { authenticateUser } from '../../redux/auth';
 
 const LoginForm = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [status, setStatus] = useState(null);
+	const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-	function loginHandler() {
-		async function getStatus() {
-			const res = await authenticate(email, password);
-			setStatus(res);
+	const dispatch = useDispatch();
+
+	async function loginHandler() {
+		setIsAuthenticating(true);
+		try {
+			const token = await authenticate(email, password);
+			dispatch(authenticateUser({ token: token }));
+		} catch (error) {
+			console.error(`${error}`);
 		}
-		getStatus();
-		if (status) {
-			console.log(status);
-		}
+		setIsAuthenticating(false);
 	}
 
 	const setEmailTrimmed = email => {
 		setEmail(email.trim());
 	};
 
+	if (isAuthenticating) {
+		return (
+			<View>
+				<Spinner size='large' status='basic' />
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
 	return (
 		<View style={styles.container}>
 			<Input
