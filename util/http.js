@@ -55,3 +55,35 @@ export async function fetchGroup(url, token) {
 	});
 	return res.data.name;
 }
+
+/**
+ * http request for fetching sites
+ * @param {String} token
+ * @returns {Object}
+ */
+export async function fetchSites(token) {
+	const res = await axios.get(SITES_URL, {
+		headers: { Authorization: 'Bearer ' + token },
+	});
+	return res.data;
+}
+
+/**
+ *
+ * @param {String} siteName
+ * @param {String} token
+ * @returns {Object}
+ */
+export async function fetchJob(siteName, token) {
+	const res = await axios.get(JOBS_URL + `?search=${siteName}`, {
+		headers: { Authorization: 'Bearer ' + token },
+	});
+	return res.data;
+}
+
+export async function fetchCleaner(url, token) {
+	const res = await axios.get(url, {
+		headers: { Authorization: 'Bearer ' + token },
+	});
+	return res.data.first_name + ' ' + res.data.last_name;
+}

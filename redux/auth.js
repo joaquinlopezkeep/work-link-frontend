@@ -4,6 +4,7 @@ const authSlice = createSlice({
 	name: 'authenticate',
 	initialState: {
 		token: '',
+
 		isAuthenticated: false,
 	},
 	reducers: {
@@ -13,6 +14,7 @@ const authSlice = createSlice({
 		},
 		loggout: state => {
 			state.token = null;
+			state.isAuthenticated = false;
 		},
 	},
 });

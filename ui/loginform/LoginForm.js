@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Button, Input, Spinner, Text } from '@ui-kitten/components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { EmailIcon, EyeIcon } from '../../util/icons';
 import styles from './LoginFormStyles';
 import { authenticate } from '../../util/http';
@@ -13,7 +13,6 @@ const LoginForm = () => {
 	const [isAuthenticating, setIsAuthenticating] = useState(false);
 
 	const dispatch = useDispatch();
-
 	async function loginHandler() {
 		//Display Spinner
 		setIsAuthenticating(true);
@@ -25,7 +24,7 @@ const LoginForm = () => {
 			dispatch(authenticateUser({ token: token }));
 		} catch (error) {
 			//authenticate in http.js throws an error if no access token is present
-			console.error(error);
+			Alert.alert(`${error}`);
 			//Remove Spinner
 			setIsAuthenticating(false);
 		}

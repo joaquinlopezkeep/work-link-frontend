@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { Alert, FlatList, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Spinner, Text } from '@ui-kitten/components';
-import { fetchUser, fetchGroup } from '../../util/http';
+import { Card, Layout, Spinner, Text, Button } from '@ui-kitten/components';
+import { fetchUser, fetchSites } from '../../util/http';
 import { setCurrentUser } from '../../redux/user';
+import { setCurrentSites } from '../../redux/sites';
 import styles from './DashBoardStyles';
 
 const Dashboard = props => {
 	const [loading, setLoading] = useState(true);
-	const [fullName, setFullName] = useState('');
-	const [email, setEmail] = useState('');
-	const [group, setGroup] = useState('');
-
 	const token = useSelector(state => state.authenticate.token);
-	const groupURL = useSelector(state => state.user.groups[0]);
+	const sites = useSelector(state => state.site.sites);
 	const dispatch = useDispatch();
+
+	//load data.
 	useEffect(() => {
 		//get the user from API
 		fetchUser(token)
@@ -28,34 +28,62 @@ const Dashboard = props => {
 						groups: response.groups,
 					})
 				);
-				//set the Name
-				setFullName(`${response.first_name} ${response.last_name}`);
-				//set Email
-				setEmail(`${response.email}`);
-			})
-			.catch(error => console.error(error));
-		//get the group name to render the correct dashboard
-		fetchGroup(groupURL, token)
-			.then(response => {
-				setGroup(response);
 				setLoading(false);
+			})
+			.catch(error => Alert.alert(`${error}`));
+
+		fetchSites(token)
+			.then(response => {
+				const sites = [];
+				response.forEach(site => {
+					const siteObject = {
+						key: site.url,
+						name: site.name,
+						address: site.address,
+						post_code: site.post_code,
+						client_name: site.client_name,
+						client_contact_number: site.client_contact_number,
+						manager: site.manager,
+					};
+					sites.push(siteObject);
+				});
+				dispatch(setCurrentSites(sites));
 			})
 			.catch(error => console.error(error));
 	}, []);
 
-	function Content() {
+	const Content = () => {
 		if (loading) {
 			return <Spinner size='large' />;
 		}
-		return <Text>{fullName}</Text>;
-		// if (group == 'Managers') {
-		// 	return <ManagersDashboard/>
-		// }
-		// return <CleanersDashboard/>
-	}
+		return (
+			<FlatList
+				data={sites}
+				renderItem={site => {
+					function pressHandler() {
+						//navigate to Screen detail and send key to load all data.
+						props.navigation.navigate('SiteDetail', {
+							key: site.item.key,
+						});
+					}
+
+					return (
+						<Card style={styles.card}>
+							<Text>{site.item.name}</Text>
+							<Button appearance='ghost' onPress={pressHandler}>
+								View details
+							</Button>
+						</Card>
+					);
+				}}
+				alwaysBounceVertical={false}
+				style={{ flex: 1 }}
+			/>
+		);
+	};
 
 	return (
-		<Layout style={styles.container}>
+		<Layout style={{ flex: 1, justifyContent: 'center', padding: 16 }}>
 			<Content />
 		</Layout>
 	);

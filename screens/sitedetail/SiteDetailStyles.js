@@ -1,17 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { default as Theme } from '../../custom-theme.json';
+import styles from '../loginscreen/LoginScreenStyles';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
 		alignItems: 'center',
+		padding: 16,
 	},
 	card: {
-		backgroundColor: Theme['color-primary-800'],
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		marginBottom: 16,
+		backgroundColor: Theme['color-info-100'],
+		maxWidth: '80%',
 	},
 });
 

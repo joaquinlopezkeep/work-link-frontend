@@ -10,6 +10,7 @@ import { default as theme } from './custom-theme.json';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { useSelector } from 'react-redux';
+import SiteDetail from './screens/sitedetail/SiteDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ function MainStack() {
 					},
 				}}>
 				<Stack.Screen name='Dashboard' component={Dashboard} />
+				<Stack.Screen name='SiteDetail' component={SiteDetail} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
