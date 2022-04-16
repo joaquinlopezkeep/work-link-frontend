@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { Button, Input, Spinner, Text } from '@ui-kitten/components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { EmailIcon, EyeIcon } from '../../util/icons';
 import styles from './LoginFormStyles';
 import { authenticate } from '../../util/http';
@@ -15,20 +15,28 @@ const LoginForm = () => {
 	const dispatch = useDispatch();
 
 	async function loginHandler() {
+		//Display Spinner
 		setIsAuthenticating(true);
+
 		try {
+			//Call API for Oauth token
 			const token = await authenticate(email, password);
+			//Store Token in redux store also sets isAuth to true which switches screensstack in App.js
 			dispatch(authenticateUser({ token: token }));
 		} catch (error) {
-			console.error(`${error}`);
+			//authenticate in http.js throws an error if no access token is present
+			console.error(error);
+			//Remove Spinner
+			setIsAuthenticating(false);
 		}
-		setIsAuthenticating(false);
 	}
 
+	//This is to avoid whitespaces at the end of the email address which cause 401 error
 	const setEmailTrimmed = email => {
 		setEmail(email.trim());
 	};
 
+	//Displays the loading Spinner
 	if (isAuthenticating) {
 		return (
 			<View>
@@ -38,6 +46,7 @@ const LoginForm = () => {
 		);
 	}
 	return (
+		//Or displays the Login form
 		<View style={styles.container}>
 			<Input
 				value={email}

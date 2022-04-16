@@ -2,6 +2,7 @@ const BASE_URL = 'https://worklink.herokuapp.com/';
 const BASE_API_URL = `${BASE_URL}api/v1/`;
 export const AUTH_URL = `${BASE_URL}authentication/token/`;
 export const EMPLOYEES_URL = `${BASE_API_URL}employees/`;
+export const GET_USER_URL = `${BASE_API_URL}employees/getuser/`;
 export const GROUPS_URL = `${BASE_API_URL}groups/`;
 export const SITES_URL = `${BASE_API_URL}sites/`;
 export const JOBS_URL = `${BASE_API_URL}jobs/`;

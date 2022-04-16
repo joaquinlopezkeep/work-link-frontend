@@ -9,8 +9,34 @@ import Dashboard from './screens/dashBoard/Dashboard';
 import { default as theme } from './custom-theme.json';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { useSelector } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
+
+function MainStack() {
+	return (
+		<NavigationContainer>
+			<Stack.Navigator
+				initialRouteName='Dashboard'
+				screenOptions={{
+					headerStyle: {
+						backgroundColor: theme['color-info-100'],
+						headerTintColor: 'white',
+					},
+				}}>
+				<Stack.Screen name='Dashboard' component={Dashboard} />
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+}
+
+function Content() {
+	const auth = useSelector(state => state.authenticate.isAuthenticated);
+	if (auth) {
+		return <MainStack />;
+	}
+	return <LoginScreen />;
+}
 
 export default function App() {
 	return (
@@ -18,25 +44,7 @@ export default function App() {
 			<IconRegistry icons={EvaIconsPack} />
 			<ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
 				<Provider store={store}>
-					<NavigationContainer>
-						<Stack.Navigator
-							initialRouteName='Login'
-							screenOptions={{
-								headerStyle: {
-									backgroundColor: theme['color-info-100'],
-									headerTintColor: 'white',
-								},
-							}}>
-							<Stack.Screen
-								name='Login'
-								component={LoginScreen}
-							/>
-							<Stack.Screen
-								name='Dashboard'
-								component={Dashboard}
-							/>
-						</Stack.Navigator>
-					</NavigationContainer>
+					<Content />
 				</Provider>
 			</ApplicationProvider>
 		</>

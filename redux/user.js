@@ -1,13 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const userSlice = {
+const userSlice = createSlice({
 	name: 'user',
 	initialState: {
 		url: '',
 		first_name: '',
 		last_name: '',
-		date_joined: '',
 		email: '',
 		groups: [],
 	},
-};
+	reducers: {
+		setCurrentUser: (state, action) => {
+			state.url = action.payload.url;
+			state.first_name = action.payload.first_name;
+			state.last_name = action.payload.last_name;
+			state.email = action.payload.email;
+			state.groups = action.payload.groups;
+		},
+		getFullName: state => {
+			return `${state.first_name} ${state.last_name}`;
+		},
+	},
+});
+
+export const setCurrentUser = userSlice.actions.setCurrentUser;
+export const getFullName = userSlice.actions.getFullName;
+export default userSlice.reducer;
