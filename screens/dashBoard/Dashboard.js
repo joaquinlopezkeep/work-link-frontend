@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, FlatList, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Layout, Spinner, Text, Button } from '@ui-kitten/components';
+import {
+	Card,
+	Layout,
+	Spinner,
+	Text,
+	Button,
+	ButtonGroup,
+} from '@ui-kitten/components';
 import { fetchUser, fetchSites } from '../../util/http';
-import { setCurrentUser } from '../../redux/user';
+import { getFullName, setCurrentUser } from '../../redux/user';
 import { setCurrentSites } from '../../redux/sites';
 import styles from './DashBoardStyles';
 
@@ -11,12 +18,13 @@ const Dashboard = props => {
 	const [loading, setLoading] = useState(true);
 	const token = useSelector(state => state.authenticate.token);
 	const sites = useSelector(state => state.site.sites);
+	const email = useSelector(state => state.authenticate.authEmail);
 	const dispatch = useDispatch();
 
-	//load data.
+	//load data when screen is rendered.
 	useEffect(() => {
 		//get the user from API
-		fetchUser(token)
+		fetchUser(email, token)
 			.then(response => {
 				// save the details to the store for later use
 				dispatch(
@@ -60,19 +68,32 @@ const Dashboard = props => {
 			<FlatList
 				data={sites}
 				renderItem={site => {
-					function pressHandler() {
+					function detailsPressHandler() {
 						//navigate to Screen detail and send key to load all data.
 						props.navigation.navigate('SiteDetail', {
+							key: site.item.key,
+						});
+					}
+					function ordersPressHandler() {
+						//navigate to Screen detail and send key to load all data.
+						props.navigation.navigate('OrderDetail', {
 							key: site.item.key,
 						});
 					}
 
 					return (
 						<Card style={styles.card}>
-							<Text>{site.item.name}</Text>
-							<Button appearance='ghost' onPress={pressHandler}>
-								View details
-							</Button>
+							<Text style={{ alignSelf: 'center' }} category='h4'>
+								{site.item.name}
+							</Text>
+							<ButtonGroup appearance='outline'>
+								<Button onPress={detailsPressHandler}>
+									View details
+								</Button>
+								<Button onPress={ordersPressHandler}>
+									View Orders
+								</Button>
+							</ButtonGroup>
 						</Card>
 					);
 				}}

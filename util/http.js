@@ -8,6 +8,7 @@ import {
 	JOBS_URL,
 	PRODUCTS_URL,
 	GET_USER_URL,
+	ORDERS_URL,
 } from './api';
 
 axios.defaults.baseURL = 'https://worklink.herokuapp.com/';
@@ -36,8 +37,8 @@ export async function authenticate(email, password) {
  * @param {String} token
  * @returns {Object} Object
  */
-export async function fetchUser(token) {
-	const res = await axios.get(GET_USER_URL, {
+export async function fetchUser(email, token) {
+	const res = await axios.get(EMPLOYEES_URL + `?search=${email}`, {
 		headers: { Authorization: 'Bearer ' + token },
 	});
 	return res.data[0];
@@ -69,10 +70,10 @@ export async function fetchSites(token) {
 }
 
 /**
- *
+ * http request for fetching jobs specific to a site
  * @param {String} siteName
  * @param {String} token
- * @returns {Object}
+ * @returns {Object} array of objects
  */
 export async function fetchJob(siteName, token) {
 	const res = await axios.get(JOBS_URL + `?search=${siteName}`, {
@@ -81,9 +82,15 @@ export async function fetchJob(siteName, token) {
 	return res.data;
 }
 
-export async function fetchCleaner(url, token) {
-	const res = await axios.get(url, {
+/**
+ * http request for fetching orders specific to a site
+ * @param {String} siteName
+ * @param {String} token
+ * @returns {Object} array of objects
+ */
+export async function fetchOrders(siteName, token) {
+	const res = await axios.get(ORDERS_URL + `?search=${siteName}`, {
 		headers: { Authorization: 'Bearer ' + token },
 	});
-	return res.data.first_name + ' ' + res.data.last_name;
+	return res.data;
 }

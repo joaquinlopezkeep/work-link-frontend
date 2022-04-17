@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { Layout, Text, Card, Divider } from '@ui-kitten/components';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchJob, fetchCleaner } from '../../util/http';
+import { fetchJob } from '../../util/http';
 import { setJob } from '../../redux/job';
-import styles from '../dashBoard/DashBoardStyles';
 import { FlatList } from 'react-native';
-import { default as Theme } from '../../custom-theme.json';
+import styles from './SiteDetailStyles';
 
 const SiteDetail = ({ route, navigation }) => {
 	const site = useSelector(state =>
@@ -25,7 +24,7 @@ const SiteDetail = ({ route, navigation }) => {
 						key: job.url,
 						name: job.name,
 						site: job.site,
-						cleaner: cleaner,
+						cleaner: job.cleaner,
 						start_date: job.start_date,
 						rate: job.rate,
 						hours: job.hours,
@@ -40,29 +39,28 @@ const SiteDetail = ({ route, navigation }) => {
 
 	return (
 		<Layout style={styles.container}>
-			<Card style={styles.card}>
-				<Text category='h4'>Site name:</Text>
-				<Text>{site.name}</Text>
-				<Divider />
-				<Text category='h4'>Site Address:</Text>
-				<Text>{site.address}</Text>
-				<Text>{site.post_code}</Text>
-				<Divider />
-				<Text category='h4'>Client name:</Text>
-				<Text>{site.client_name}</Text>
-				<Divider />
-				<Text category='h4'>Client contact number:</Text>
-				<Text>{site.client_contact_number}</Text>
-			</Card>
 			<FlatList
 				data={jobs}
+				style={styles.list}
+				ListHeaderComponent={
+					<Card style={styles.card}>
+						<Text category='h4'>Site name:</Text>
+						<Text>{site.name}</Text>
+						<Divider />
+						<Text category='h4'>Site Address:</Text>
+						<Text>{site.address}</Text>
+						<Text>{site.post_code}</Text>
+						<Divider />
+						<Text category='h4'>Client name:</Text>
+						<Text>{site.client_name}</Text>
+						<Divider />
+						<Text category='h4'>Client contact number:</Text>
+						<Text>{site.client_contact_number}</Text>
+					</Card>
+				}
 				renderItem={job => {
 					return (
-						<View
-							style={{
-								backgroundColor: Theme['color-success-600'],
-								padding: 16,
-							}}>
+						<View style={styles.listItem}>
 							<Text category='h4'>Job name:</Text>
 							<Text>{job.item.name}</Text>
 							<Divider />
@@ -73,10 +71,10 @@ const SiteDetail = ({ route, navigation }) => {
 							<Text>{job.item.start_date}</Text>
 							<Divider />
 							<Text category='h4'>Hourly Rate:</Text>
-							<Text>{job.item.rate}</Text>
+							<Text>£{job.item.rate}</Text>
 							<Divider />
 							<Text category='h4'>Hours per shift:</Text>
-							<Text>{job.item.hours}hrs</Text>
+							<Text>{job.item.hours}</Text>
 							<Divider />
 							<Text category='h4'>Duties:</Text>
 							<Text>{job.item.description}</Text>

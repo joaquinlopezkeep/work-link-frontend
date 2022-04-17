@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { EmailIcon, EyeIcon } from '../../util/icons';
 import styles from './LoginFormStyles';
 import { authenticate } from '../../util/http';
-import { authenticateUser } from '../../redux/auth';
+import { authenticateUser, setAuthEmail } from '../../redux/auth';
 
 const LoginForm = () => {
 	const [email, setEmail] = useState('');
@@ -13,12 +13,16 @@ const LoginForm = () => {
 	const [isAuthenticating, setIsAuthenticating] = useState(false);
 
 	const dispatch = useDispatch();
+	const authEmail = useSelector(state => state.authenticate.authEmail);
 	async function loginHandler() {
 		//Display Spinner
 		setIsAuthenticating(true);
 
 		try {
-			//Call API for Oauth token
+			//set authEmail for later API calls using django-filter search_fields
+			dispatch(setAuthEmail(email));
+			console.log(authEmail);
+			//Call API for OauthV2 token
 			const token = await authenticate(email, password);
 			//Store Token in redux store also sets isAuth to true which switches screensstack in App.js
 			dispatch(authenticateUser({ token: token }));

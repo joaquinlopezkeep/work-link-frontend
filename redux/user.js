@@ -17,8 +17,10 @@ const userSlice = createSlice({
 			state.email = action.payload.email;
 			state.groups = action.payload.groups;
 		},
+		getFullName: state => `${state.first_name} ${state.last_name}`,
 	},
 });
 
+export const getFullName = userSlice.actions.getFullName;
 export const setCurrentUser = userSlice.actions.setCurrentUser;
 export default userSlice.reducer;
