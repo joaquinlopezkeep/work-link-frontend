@@ -13,7 +13,6 @@ const LoginForm = () => {
 	const [isAuthenticating, setIsAuthenticating] = useState(false);
 
 	const dispatch = useDispatch();
-	const authEmail = useSelector(state => state.authenticate.authEmail);
 	async function loginHandler() {
 		//Display Spinner
 		setIsAuthenticating(true);
@@ -21,7 +20,6 @@ const LoginForm = () => {
 		try {
 			//set authEmail for later API calls using django-filter search_fields
 			dispatch(setAuthEmail(email));
-			console.log(authEmail);
 			//Call API for OauthV2 token
 			const token = await authenticate(email, password);
 			//Store Token in redux store also sets isAuth to true which switches screensstack in App.js

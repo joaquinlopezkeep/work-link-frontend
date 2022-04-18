@@ -7,6 +7,7 @@ import SiteDetail from './screens/sitedetail/SiteDetail';
 import LoginScreen from './screens/loginscreen/LoginScreen';
 import Dashboard from './screens/dashBoard/Dashboard';
 import OrderDetail from './screens/orderdetails/OrderDetails';
+import OrderForm from './screens/ordersform/OrderForm';
 //Redux
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
@@ -33,6 +34,7 @@ function MainStack() {
 				<Stack.Screen name='Dashboard' component={Dashboard} />
 				<Stack.Screen name='SiteDetail' component={SiteDetail} />
 				<Stack.Screen name='OrderDetail' component={OrderDetail} />
+				<Stack.Screen name='OrderForm' component={OrderForm} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

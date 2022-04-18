@@ -45,19 +45,6 @@ export async function fetchUser(email, token) {
 }
 
 /**
- * http request for fetching the current users group
- * @param {String} url
- * @param {String} token
- * @returns {String} group name
- */
-export async function fetchGroup(url, token) {
-	const res = await axios.get(url, {
-		headers: { Authorization: 'Bearer ' + token },
-	});
-	return res.data.name;
-}
-
-/**
  * http request for fetching sites
  * @param {String} token
  * @returns {Object}
@@ -90,6 +77,13 @@ export async function fetchJob(siteName, token) {
  */
 export async function fetchOrders(siteName, token) {
 	const res = await axios.get(ORDERS_URL + `?search=${siteName}`, {
+		headers: { Authorization: 'Bearer ' + token },
+	});
+	return res.data;
+}
+
+export async function fetchSchedules(email, token) {
+	const res = await axios.get(SCHEDULES_URL + `?search=${email}`, {
 		headers: { Authorization: 'Bearer ' + token },
 	});
 	return res.data;

@@ -35,7 +35,7 @@ const SiteDetail = ({ route, navigation }) => {
 				dispatch(setJob(jobs));
 			})
 			.catch(error => console.error(error));
-	});
+	}, []);
 
 	return (
 		<Layout style={styles.container}>

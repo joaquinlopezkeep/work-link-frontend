@@ -37,7 +37,7 @@ const OrderDetail = ({ route, navigation }) => {
 				dispatch(setOrders(orders));
 			})
 			.catch(error => console.error(error));
-	});
+	}, []);
 
 	return (
 		<Layout style={styles.container}>

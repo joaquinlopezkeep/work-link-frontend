@@ -7,7 +7,7 @@ const userSlice = createSlice({
 		first_name: '',
 		last_name: '',
 		email: '',
-		groups: [],
+		groups: '',
 	},
 	reducers: {
 		setCurrentUser: (state, action) => {
